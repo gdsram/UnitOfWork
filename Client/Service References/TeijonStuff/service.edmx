@@ -1,0 +1,49 @@
+﻿<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="1.0" m:MaxDataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="teijon_stuffModel" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityType Name="job">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="name" Type="Edm.String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        <Property Name="description" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        <NavigationProperty Name="people" Relationship="teijon_stuffModel.FK_person_job" ToRole="person" FromRole="job" />
+      </EntityType>
+      <EntityType Name="person">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="name" Type="Edm.String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+        <Property Name="sex" Type="Edm.String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+        <Property Name="developer" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="description" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        <Property Name="id_job" Type="Edm.Int32" />
+        <NavigationProperty Name="job" Relationship="teijon_stuffModel.FK_person_job" ToRole="job" FromRole="person" />
+      </EntityType>
+      <Association Name="FK_person_job">
+        <End Type="teijon_stuffModel.job" Role="job" Multiplicity="0..1" />
+        <End Type="teijon_stuffModel.person" Role="person" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="job">
+            <PropertyRef Name="id" />
+          </Principal>
+          <Dependent Role="person">
+            <PropertyRef Name="id_job" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+    </Schema>
+    <Schema Namespace="NorthwindService" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityContainer Name="teijon_stuffEntities" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="jobs" EntityType="teijon_stuffModel.job" />
+        <EntitySet Name="people" EntityType="teijon_stuffModel.person" />
+        <AssociationSet Name="FK_person_job" Association="teijon_stuffModel.FK_person_job">
+          <End Role="job" EntitySet="jobs" />
+          <End Role="person" EntitySet="people" />
+        </AssociationSet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
